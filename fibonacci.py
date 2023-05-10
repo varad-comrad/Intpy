@@ -72,8 +72,9 @@ def plot_graphic(bench1, bench2, n: int):
 
 def improvement(bench1, bench2):
     aux1, aux2 = bench1.to_numpy(), bench2.to_numpy()
-    vec = (aux1[0]-aux2[0])/aux2[0]
-    return dict(enumerate(vec))
+    vec1 = (aux1[0]-aux2[0])/aux2[0]
+    vec2 = (aux1[1]-aux2[1])/aux2[1]
+    return {'Recursive':vec1,'Iterative':vec2}
 
 @initialize_intpy(__file__)
 def main(n):
@@ -86,7 +87,9 @@ def main(n):
         benchmark_no_intpy.benchmark_fun2(n)
     plot_graphic(benchmark, benchmark_no_intpy, n)
     d = improvement(benchmark, benchmark_no_intpy)
-    print(pd.Series(d))
+    df = pd.DataFrame(d)
+    df.index = range(1,df.shape[0]+1)
+    print(df)
     
     input()
     
