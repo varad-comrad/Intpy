@@ -7,14 +7,9 @@ import numpy as np
 import pandas as pd
 
 
-@deterministic
 def fibonacci_recursive(n):
-    if n < 2:
-        return n
-    else:
-        return fibonacci_recursive(n-1) + fibonacci_recursive(n-2) 
+    return fibonacci_recursive(n-1) + fibonacci_recursive(n-2) if n >=2 else n
 
-@deterministic
 def fibonacci_iterative(n):
     a, b = 0, 1
     for i in range(n):
@@ -31,7 +26,6 @@ class FibonacciBenchmark:
         self.cnt_fun2 = 0
         self.title = title
 
-
     def benchmark_fun1(self, *args):
         self.results_fun1.append([])
         for i in range(args[0]):
@@ -41,7 +35,6 @@ class FibonacciBenchmark:
                 time.perf_counter() - t)
         self.cnt_fun1 += 1
 
-
     def benchmark_fun2(self, *args):
         self.results_fun2.append([])
         for i in range(args[0]):
@@ -50,8 +43,7 @@ class FibonacciBenchmark:
             self.results_fun2[self.cnt_fun2].append(
                 time.perf_counter() - t)
         self.cnt_fun2 += 1
-    
-    
+        
     def to_numpy(self):
         aux_results_fun1 = np.array(self.results_fun1)
         aux_results_fun2 = np.array(self.results_fun2)
@@ -76,11 +68,14 @@ def improvement(bench1, bench2):
     vec2 = (aux1[1]-aux2[1])/aux2[1]
     return {'Recursive':vec1,'Iterative':vec2}
 
+def save_results(data):
+    data.to_csv('results.csv',mode = 'a')
+
 @initialize_intpy(__file__)
 def main(n):
     benchmark = FibonacciBenchmark(deterministic(fibonacci_recursive), deterministic(fibonacci_iterative), 'Intpy')
     benchmark_no_intpy = FibonacciBenchmark(fibonacci_recursive, fibonacci_iterative, 'No Intpy')
-    for i in range(n): 
+    for _ in range(100): 
         benchmark.benchmark_fun1(n)
         benchmark.benchmark_fun2(n)
         benchmark_no_intpy.benchmark_fun1(n)
@@ -90,7 +85,7 @@ def main(n):
     df = pd.DataFrame(d)
     df.index = range(1,df.shape[0]+1)
     print(df)
-    
+    save_results(df)
     input()
     
 if __name__ == '__main__':
