@@ -1,8 +1,9 @@
+#fibonacci.py
+
 from intpy.intpy import initialize_intpy, deterministic
 import time
 import matplotlib.pyplot as plt
 import sys
-import multiprocessing
 import numpy as np
 import pandas as pd
 
@@ -28,7 +29,7 @@ class FibonacciBenchmark:
 
     def benchmark_fun1(self, *args):
         self.results_fun1.append([])
-        for i in range(args[0]):
+        for i in range(1,args[0]+1):
             t = time.perf_counter()
             self.fun1(i)
             self.results_fun1[self.cnt_fun1].append(
@@ -37,7 +38,7 @@ class FibonacciBenchmark:
 
     def benchmark_fun2(self, *args):
         self.results_fun2.append([])
-        for i in range(args[0]):
+        for i in range(1,args[0]+1):
             t = time.perf_counter()
             self.fun2(i)
             self.results_fun2[self.cnt_fun2].append(
@@ -69,7 +70,7 @@ def improvement(bench1, bench2):
     return {'Recursive':vec1,'Iterative':vec2}
 
 def save_results(data):
-    data.to_csv('results.csv',mode = 'a')
+    data.to_csv('results.csv',mode = 'a',header = False)
 
 @initialize_intpy(__file__)
 def main(n):
@@ -85,7 +86,6 @@ def main(n):
     df = pd.DataFrame(d)
     df.index = range(1,df.shape[0]+1)
     print(df)
-    save_results(df)
     input()
     
 if __name__ == '__main__':

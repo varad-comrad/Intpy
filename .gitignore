@@ -135,5 +135,8 @@ dmypy.json
 
 others
 intpy
+
+intpy_dev
+.intpy
 **mypy_cache
 
