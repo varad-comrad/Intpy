@@ -1,1 +1,1 @@
-intpy is not compatible with numpy (likely pandas as well)
+intpy is not compatible with matplotlib
