@@ -2,7 +2,6 @@ from intpy.intpy import initialize_intpy, deterministic
 import time
 import matplotlib.pyplot as plt
 import sys
-import multiprocessing
 import numpy as np
 import pandas as pd
 
@@ -57,18 +56,18 @@ class FibonacciBenchmark:
         return aux_results_fun1.mean(axis=0), aux_results_fun2.mean(axis=0)
 
 
-# def plot_graphic(bench1, bench2, n: int):
-#     aux1, subtitles = (bench1.to_numpy(), bench2.to_numpy()), [
-#         'Recursive Fibonacci', 'Iterative Fibonacci']
-#     fig, axes = plt.subplots(2, 2, figsize=(16, 10))
-#     fig.suptitle('benchmark')
-#     for i in range(2):
-#         for j in range(2):
-#             axes[i, j].plot(np.arange(n), aux1[i][j], color='bisque')
-#             axes[i, j].set_title(subtitles[j])
-#             axes[i, j].grid(color='lawngreen', linestyle='--')
-#             axes[i, j].set_facecolor('royalblue')
-#     fig.show()
+def plot_graphic(bench1, bench2, n: int):
+    aux1, subtitles = (bench1.to_numpy(), bench2.to_numpy()), [
+        'Recursive Fibonacci', 'Iterative Fibonacci']
+    fig, axes = plt.subplots(2, 2, figsize=(16, 10))
+    fig.suptitle('benchmark')
+    for i in range(2):
+        for j in range(2):
+            axes[i, j].plot(np.arange(n), aux1[i][j], color='bisque')
+            axes[i, j].set_title(subtitles[j])
+            axes[i, j].grid(color='lawngreen', linestyle='--')
+            axes[i, j].set_facecolor('royalblue')
+    fig.show()
 
 
 def improvement(bench1, bench2):
@@ -89,13 +88,18 @@ def main(n):
         benchmark.benchmark_fun2(n)
         benchmark_no_intpy.benchmark_fun1(n)
         benchmark_no_intpy.benchmark_fun2(n)
-    # plot_graphic(benchmark, benchmark_no_intpy, n)
-    d = improvement(benchmark, benchmark_no_intpy)
-    df = pd.DataFrame(d)
-    df.index = range(1, df.shape[0]+1)
-    print(df)
+    
+    # ! FUNCIONA
+    # aux1 = benchmark.to_numpy()
+    # aux2 = benchmark.to_numpy()
+    # plt.plot(np.arange(n), aux1[0])
+    # plt.show()
 
+    # ! NÃO FUNCIONA
+    # plot_graphic(benchmark, benchmark_no_intpy, n)
+    
     input()
+
 
 
 if __name__ == '__main__':
