@@ -6,7 +6,6 @@ import numpy as np
 import pandas as pd
 
 
-@deterministic
 def fibonacci_recursive(n):
     if n < 2:
         return n
@@ -14,7 +13,6 @@ def fibonacci_recursive(n):
         return fibonacci_recursive(n-1) + fibonacci_recursive(n-2)
 
 
-@deterministic
 def fibonacci_iterative(n):
     a, b = 0, 1
     for i in range(n):
@@ -56,18 +54,6 @@ class FibonacciBenchmark:
         return aux_results_fun1.mean(axis=0), aux_results_fun2.mean(axis=0)
 
 
-def plot_graphic(bench1, bench2, n: int):
-    aux1, subtitles = (bench1.to_numpy(), bench2.to_numpy()), [
-        'Recursive Fibonacci', 'Iterative Fibonacci']
-    fig, axes = plt.subplots(2, 2, figsize=(16, 10))
-    fig.suptitle('benchmark')
-    for i in range(2):
-        for j in range(2):
-            axes[i, j].plot(np.arange(n), aux1[i][j], color='bisque')
-            axes[i, j].set_title(subtitles[j])
-            axes[i, j].grid(color='lawngreen', linestyle='--')
-            axes[i, j].set_facecolor('royalblue')
-    fig.show()
 
 
 def improvement(bench1, bench2):
@@ -97,9 +83,24 @@ def main(n):
 
     # ! NÃO FUNCIONA
     # plot_graphic(benchmark, benchmark_no_intpy, n)
-    
+    df = pd.DataFrame({'one':benchmark_no_intpy.results_fun1[0],
+                      'two':benchmark.results_fun1[0]})
+    print(df)
     input()
 
+
+# def plot_graphic(bench1, bench2, n: int):
+#     aux1, subtitles = (bench1.to_numpy(), bench2.to_numpy()), [
+#         'Recursive Fibonacci', 'Iterative Fibonacci']
+#     fig, axes = plt.subplots(2, 2, figsize=(16, 10))
+#     fig.suptitle('benchmark')
+#     for i in range(2):
+#         for j in range(2):
+#             axes[i, j].plot(np.arange(n), aux1[i][j], color='bisque')
+#             axes[i, j].set_title(subtitles[j])
+#             axes[i, j].grid(color='lawngreen', linestyle='--')
+#             axes[i, j].set_facecolor('royalblue')
+#     fig.show()
 
 
 if __name__ == '__main__':
