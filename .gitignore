@@ -140,6 +140,5 @@ intpy_dev
 .intpy
 **mypy_cache
 deprecated.py
-error_message.txt
 obs.txt
 

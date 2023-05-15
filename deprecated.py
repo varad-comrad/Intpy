@@ -76,10 +76,10 @@ def main(n):
         benchmark_no_intpy.benchmark_fun2(n)
     
     # ! FUNCIONA
-    # aux1 = benchmark.to_numpy()
-    # aux2 = benchmark.to_numpy()
-    # plt.plot(np.arange(n), aux1[0])
-    # plt.show()
+    aux1 = benchmark.to_numpy()
+    aux2 = benchmark.to_numpy()
+    plt.plot(np.arange(n), aux1[0])
+    plt.show()
 
     # ! NÃO FUNCIONA
     # plot_graphic(benchmark, benchmark_no_intpy, n)
@@ -89,18 +89,18 @@ def main(n):
     input()
 
 
-# def plot_graphic(bench1, bench2, n: int):
-#     aux1, subtitles = (bench1.to_numpy(), bench2.to_numpy()), [
-#         'Recursive Fibonacci', 'Iterative Fibonacci']
-#     fig, axes = plt.subplots(2, 2, figsize=(16, 10))
-#     fig.suptitle('benchmark')
-#     for i in range(2):
-#         for j in range(2):
-#             axes[i, j].plot(np.arange(n), aux1[i][j], color='bisque')
-#             axes[i, j].set_title(subtitles[j])
-#             axes[i, j].grid(color='lawngreen', linestyle='--')
-#             axes[i, j].set_facecolor('royalblue')
-#     fig.show()
+def plot_graphic(bench1, bench2, n: int):
+    aux1, subtitles = (bench1.to_numpy(), bench2.to_numpy()), [
+        'Recursive Fibonacci', 'Iterative Fibonacci']
+    fig, axes = plt.subplots(2, 2, figsize=(16, 10))
+    fig.suptitle('benchmark')
+    for i in range(2):
+        for j in range(2):
+            axes[i, j].plot(np.arange(n), aux1[i][j], color='bisque')
+            axes[i, j].set_title(subtitles[j])
+            axes[i, j].grid(color='lawngreen', linestyle='--')
+            axes[i, j].set_facecolor('royalblue')
+    fig.show()
 
 
 if __name__ == '__main__':

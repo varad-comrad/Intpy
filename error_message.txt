@@ -1,0 +1,49 @@
+Traceback (most recent call last):
+  File "/home/fabricio/Documents/programs/intpy/./deprecated.py", line 107, in <module>
+    main(n)
+  File "/home/fabricio/Documents/programs/intpy/intpy/intpy.py", line 48, in execution
+    _initialize_cache(user_script_path)
+  File "/home/fabricio/Documents/programs/intpy/intpy/intpy.py", line 43, in _initialize_cache
+    g_user_script_graph = create_experiment_function_graph(user_script_path)
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/fabricio/Documents/programs/intpy/intpy/function_graph.py", line 246, in create_experiment_function_graph
+    experimentFunctionGraphCreator.create_experiment_function_graph()
+  File "/home/fabricio/Documents/programs/intpy/intpy/function_graph.py", line 359, in create_experiment_function_graph
+    self.__experiment_function_graph = self.__create_script_function_graph("__main__")
+                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/fabricio/Documents/programs/intpy/intpy/function_graph.py", line 379, in __create_script_function_graph
+    self.visit(script.AST)
+  File "/usr/lib/python3.11/ast.py", line 418, in visit
+    return visitor(node)
+           ^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/ast.py", line 426, in generic_visit
+    self.visit(item)
+  File "/usr/lib/python3.11/ast.py", line 418, in visit
+    return visitor(node)
+           ^^^^^^^^^^^^^
+  File "/home/fabricio/Documents/programs/intpy/intpy/function_graph.py", line 396, in visit_FunctionDef
+    self.generic_visit(node)
+  File "/usr/lib/python3.11/ast.py", line 426, in generic_visit
+    self.visit(item)
+  File "/usr/lib/python3.11/ast.py", line 418, in visit
+    return visitor(node)
+           ^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/ast.py", line 426, in generic_visit
+    self.visit(item)
+  File "/usr/lib/python3.11/ast.py", line 418, in visit
+    return visitor(node)
+           ^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/ast.py", line 426, in generic_visit
+    self.visit(item)
+  File "/usr/lib/python3.11/ast.py", line 418, in visit
+    return visitor(node)
+           ^^^^^^^^^^^^^
+  File "/usr/lib/python3.11/ast.py", line 428, in generic_visit
+    self.visit(value)
+  File "/usr/lib/python3.11/ast.py", line 418, in visit
+    return visitor(node)
+           ^^^^^^^^^^^^^
+  File "/home/fabricio/Documents/programs/intpy/intpy/function_graph.py", line 496, in visit_Call
+    function_called_name_parts.append(current_node.id)
+                                      ^^^^^^^^^^^^^^^
+AttributeError: 'Subscript' object has no attribute 'id'
