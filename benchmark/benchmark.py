@@ -1,8 +1,7 @@
-from intpy.intpy import initialize_intpy, deterministic
-
 import time
-import sys
 import csv
+
+
 
 class Benchmark:
     def __init__(self, func1, func2):
@@ -41,24 +40,3 @@ class Benchmark:
             writer.writerow(range(len(self.results2)))
             for element in self.results2:
                 writer.writerow(element)
-
-
-@deterministic
-def fib(n):
-    return fib(n-1) + fib(n-2) if n > 2 else n
-
-
-def no_intpy_fib(n):
-    return no_intpy_fib(n-1) + no_intpy_fib(n-2) if n > 2 else n
-
-
-@initialize_intpy(__file__)
-def main(n: int):
-    benchmark = Benchmark(fib, no_intpy_fib)
-    benchmark.benchmark1(n, 200)
-    benchmark.benchmark2(n, 200)
-    benchmark.save_csv('results_intpy.csv', 'results_no_intpy.csv')
-
-if __name__ == '__main__':
-    n = int(sys.argv[1])
-    main(n)

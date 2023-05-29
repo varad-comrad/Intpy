@@ -139,6 +139,6 @@ intpy
 intpy_dev
 .intpy
 **mypy_cache
-deprecated.py
 obs.txt
-
+leitura.txt
+.vscode
