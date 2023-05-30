@@ -15,16 +15,21 @@ class Benchmark:
             self.benchmark_one(func, *args, i=i, **kwargs)
 
     def benchmark_one(self, func, *args, i: int,  **kwargs) -> None:
-        result1: list = []
+        aux: list = [] # TODO: check for possibility of speeding this method (parallelism?)
         for _ in range(i):
             t = time.perf_counter()
             func(*args, **kwargs)
-            result1.append(time.perf_counter()-t)
-        self.results.append(result1)
+            aux.append(time.perf_counter()-t)
+        self.results.append(aux)
 
-    def save_csv(self, filepaths: list[str], folder='./', opening_mode: str = 'w') -> None:
+    def save_csv(self, filepaths: list[str], folder: str | None =None,
+                    opening_mode: typing.Literal['w', 'a'] = 'w',
+                    hidden_folder:bool = False) -> None:
+        
         if opening_mode not in ['w', 'a']: # ! To implement proper arg handling
             raise ValueError('Invalid opening mode')
+        if folder is None:
+            folder = './' # TODO: use pathlib to change this line and the open() line
         path = pathlib.Path(folder)
         if not path.exists():
             path.mkdir(exist_ok=True,parents=True)

@@ -1,3 +1,3 @@
-from benchmark.post_process import PostProcess
+from benchmark.post_process import ProcessResults
 
 

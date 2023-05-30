@@ -15,12 +15,12 @@ import seaborn as sns
 # s3.plot(title='relative difference between intpy and vanilla')
 # plt.show()
 # ! HASHES DIFERENTES 
-class PostProcess:
+class ProcessResults:
 
     graphic_kinds = {
         'box': sns.boxplot,
-        'line': sns.lineplot,
-        'rel': sns.relplot,
+        # 'line': sns.lineplot,
+        # 'rel': sns.relplot,
         'violin': sns.violinplot,
         'scatter': sns.scatterplot
     } 
@@ -32,10 +32,10 @@ class PostProcess:
             self.__results.append(pd.read_csv(element))
         self.medians: list[pd.core.series.Series] = [element.median(axis=1).iloc[0] for element in self.__results]
     
-    # @dispatch(pathlib.Path)
-    # def __init__(self, folder: pathlib.Path) -> None:
-    #     self.__results: list[pd.core.frame.DataFrame] = []
-    #     pass
+    @dispatch(pathlib.Path)
+    def __init__(self, folder: pathlib.Path) -> None:
+        self.__results: list[pd.core.frame.DataFrame] = []
+        pass
 
     def plot_graphic(self, *args, kind='scatter', show=False, xlabel=None,ylabel=None,title=None, **kwargs):
         fig, ax = plt.subplots()

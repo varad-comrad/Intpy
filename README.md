@@ -1,6 +1,6 @@
 ## SPEEDUPY
 
-O diretório "benchmark" possui as classes necessarias para a realização de benchmarks. Os benchmarkings ocorrem nos arquivos 'benchmarking.py' e 'processing_data.py'. Deprecated.py é um arquivo com bugs
+O diretório "benchmark" possui as classes necessarias para a realização de benchmarks. Os benchmarkings ocorrem nos arquivos 'benchmarking.py' e 'processing_data.py'. 'deprecated.py' é um arquivo com bugs
 
 Em 'functions_to_benchmark' devem se escrever as funções usadas para a realização do benchmarking
 
