@@ -1,6 +1,10 @@
 import pandas as pd
 import numpy as np
+from typing import LiteralString
+import pathlib
+from multipledispatch import dispatch
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 # df1 = pd.read_csv('results_intpy.csv')
 # s1 = df1.mean(axis=0)
@@ -10,6 +14,38 @@ import matplotlib.pyplot as plt
 
 # s3.plot(title='relative difference between intpy and vanilla')
 # plt.show()
+# ! HASHES DIFERENTES 
+class PostProcess:
 
-# class PostProcess:
-#     def __init__(self,)
+    graphic_kinds = {
+        'box': sns.boxplot,
+        'line': sns.lineplot,
+        'rel': sns.relplot,
+        'violin': sns.violinplot,
+        'scatter': sns.scatterplot
+    } 
+
+    @dispatch(list, str)
+    def __init__(self,files: list[str], folder: str | None = None) -> None:
+        self.__results: list[pd.core.frame.DataFrame] = []
+        for element in files:
+            self.__results.append(pd.read_csv(element))
+        self.medians: list[pd.core.series.Series] = [element.median(axis=1).iloc[0] for element in self.__results]
+
+    # @dispatch(list, str)
+    # def __init__(self,files: list[str], folder: str) -> None:
+    #     self.__results: list[pd.core.frame.DataFrame] = []
+    #     for element in files:
+    #         self.__results.append(pd.read_csv(folder+'/'+element))
+
+    # @dispatch
+    # def __init__(self,folder: pathlib.Path) -> None:
+    #     self.__results: list[pd.core.frame.DataFrame] = []
+    #     pass
+
+    def plot_graphic(self, kind='scatter'):
+        pass
+
+
+# a = PostProcess(['./results/results_intpy.csv', './results/results_vanilla.csv'])
+# print(a.medians)
