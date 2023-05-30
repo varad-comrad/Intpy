@@ -12,7 +12,6 @@ def main(n: int):
     benchmark = Benchmark(deterministic(fib), fib, lru_cache(fib))
     benchmark.benchmark(n, i=200)
     benchmark.save_csv(['results_intpy.csv', 'results_vanilla.csv', 'results_lru_cache.csv'], folder='./results')
-    # benchmark
 
 if __name__ == '__main__':
     n = int(sys.argv[1])

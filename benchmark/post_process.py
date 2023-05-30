@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from typing import LiteralString
+from typing import Optional
 import pathlib
 from multipledispatch import dispatch
 import matplotlib.pyplot as plt
@@ -26,26 +26,25 @@ class PostProcess:
     } 
 
     @dispatch(list, str)
-    def __init__(self,files: list[str], folder: str | None = None) -> None:
+    def __init__(self,files: list[str], folder: str) -> None:
         self.__results: list[pd.core.frame.DataFrame] = []
         for element in files:
             self.__results.append(pd.read_csv(element))
         self.medians: list[pd.core.series.Series] = [element.median(axis=1).iloc[0] for element in self.__results]
-
-    # @dispatch(list, str)
-    # def __init__(self,files: list[str], folder: str) -> None:
-    #     self.__results: list[pd.core.frame.DataFrame] = []
-    #     for element in files:
-    #         self.__results.append(pd.read_csv(folder+'/'+element))
-
-    # @dispatch
-    # def __init__(self,folder: pathlib.Path) -> None:
+    
+    # @dispatch(pathlib.Path)
+    # def __init__(self, folder: pathlib.Path) -> None:
     #     self.__results: list[pd.core.frame.DataFrame] = []
     #     pass
 
-    def plot_graphic(self, kind='scatter'):
-        pass
+    def plot_graphic(self, *args, kind='scatter', show=False, xlabel=None,ylabel=None,title=None, **kwargs):
+        fig, ax = plt.subplots()
+        ax = self.graphic_kinds[kind](x=range(len(self.medians)),y=self.medians,*args, **kwargs)
+        if show:
+            fig.show()
+        return fig, ax
 
 
-# a = PostProcess(['./results/results_intpy.csv', './results/results_vanilla.csv'])
-# print(a.medians)
+# a = PostProcess(['./results/results_intpy.csv', './results/results_vanilla.csv'], './')
+# a.plot_graphic(show=True)
+# input()
