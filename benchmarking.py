@@ -1,4 +1,4 @@
-from intpy.intpy import initialize_intpy, deterministic
+from intpy_dev.intpy import initialize_intpy, deterministic
 from benchmark.benchmark import Benchmark
 import sys
 from functions_to_benchmark.fibonacci import fib
@@ -10,7 +10,7 @@ import numpy as np
 @initialize_intpy(__file__)
 def main(n: int, i: int) -> None:
     benchmark = Benchmark(deterministic(fib), fib, lru_cache(fib)) #, factory.decorator(fib))
-    benchmark.benchmark(n, i=200)
+    benchmark.benchmark(n, i=i)
     benchmark.save_csv(['results_intpy.csv', 'results_vanilla.csv', 'results_lru_cache.csv'], folder='./results')
 
 if __name__ == '__main__':

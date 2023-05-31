@@ -2,7 +2,7 @@ import numpy as np
 import time
 import sys
 import scipy as sp
-from intpy.intpy import initialize_intpy, deterministic
+from intpy_dev.intpy import initialize_intpy, deterministic
 
 @deterministic
 def is_prime_number(n):

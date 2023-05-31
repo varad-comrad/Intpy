@@ -1,4 +1,4 @@
-from intpy.intpy import initialize_intpy, deterministic
+from intpy_dev.intpy import initialize_intpy, deterministic
 import time
 import matplotlib.pyplot as plt
 import sys

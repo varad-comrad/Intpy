@@ -1,6 +1,6 @@
 import time
 import sys
-from intpy.intpy import initialize_intpy, deterministic
+from intpy_dev.intpy import initialize_intpy, deterministic
 
 
 def raised_to_string(x):

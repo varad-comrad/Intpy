@@ -134,11 +134,12 @@ dmypy.json
 .pyre/
 
 others
-intpy
 
-intpy_dev
+
+intpy
 .intpy
 **mypy_cache
 obs.txt
 leitura.txt
+arg.py
 .vscode
