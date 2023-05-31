@@ -45,6 +45,6 @@ class ProcessResults:
         return fig, ax
 
 
-# a = PostProcess(['./results/results_intpy.csv', './results/results_vanilla.csv'], './')
+# a = ProcessResults(['./results/results_intpy.csv', './results/results_vanilla.csv'], './')
 # a.plot_graphic(show=True)
 # input()
