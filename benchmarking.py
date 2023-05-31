@@ -1,7 +1,7 @@
 from intpy_dev.intpy import initialize_intpy, deterministic
 from benchmark.benchmark import Benchmark
 import sys
-from functions_to_benchmark.fibonacci import fib
+from functions_to_benchmark.prioridades.fibonacci import fib
 from functools import lru_cache
 # from memo.memoizer.DecoratorFactoryInstance import factory 
 

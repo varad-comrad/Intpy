@@ -1,14 +1,14 @@
 import numpy as np
-import time
+# import time
 import sys
-import scipy as sp
-from intpy_dev.intpy import initialize_intpy, deterministic
+# import scipy as sp
+# from intpy_dev.intpy import initialize_intpy, deterministic
 
 
 def integrand(x): return np.exp(x)
 
 
-@deterministic
+# @deterministic
 def compute_quadrature(n):
     a = -3.0
     b = 3.0
@@ -28,15 +28,15 @@ if len(sys.argv) < 1:
     sys.exit()
 
 
-@initialize_intpy(__file__)
-def main():
-    order = int(sys.argv[1])
-    print('Gauss-Legendre Quadrature of order: ', order)
-    start = time.perf_counter()
-    compute_quadrature(order)
-    print(time.perf_counter()-start)
-    print()
+# @initialize_intpy(__file__)
+# def main():
+#     order = int(sys.argv[1])
+#     print('Gauss-Legendre Quadrature of order: ', order)
+#     start = time.perf_counter()
+#     compute_quadrature(order)
+#     print(time.perf_counter()-start)
+#     print()
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
