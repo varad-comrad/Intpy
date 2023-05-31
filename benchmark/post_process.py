@@ -44,7 +44,3 @@ class ProcessResults:
             fig.show()
         return fig, ax
 
-
-# a = ProcessResults(['./results/results_intpy.csv', './results/results_vanilla.csv'], './')
-# a.plot_graphic(show=True)
-# input()
