@@ -1,10 +1,11 @@
 ## SPEEDUPY
-
-O diretório "benchmark" possui as classes necessarias para a realização de benchmarks. Os benchmarkings ocorrem nos arquivos 'benchmarking.py' e 'processing_data.py'. 'deprecated.py' é um arquivo com bugs
+### TO DO:
 
 Em 'functions_to_benchmark' devem se escrever as funções usadas para a realização do benchmarking
 
-OBS: memo precisa de python2, vou falar com Escouper sobre isso. Por enquanto faz lru_cache, vanilla python e speedupy
+Se espelhem no 'benchmarking_fibonacci.py' para a realização do benchmarking das demais funções
+
+OBS: memo precisa de python2, vou falar com Escouper sobre isso. Por enquanto faz lru_cache, vanilla python e speedupy. Ignorem test.py
 
 ### TO DO: benchmarking comparando lru_cache, memo, speedupy e vanilla python
 

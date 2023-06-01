@@ -1,8 +1,8 @@
 import pandas as pd
 import numpy as np
-from typing import Optional
+from typing import Optional, overload
 import pathlib
-from multipledispatch import dispatch
+# from multipledispatch import dispatch
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -25,17 +25,17 @@ class ProcessResults:
         'scatter': sns.scatterplot
     } 
 
-    @dispatch(list, str)
+    # @overload
     def __init__(self,files: list[str], folder: str) -> None:
         self.__results: list[pd.core.frame.DataFrame] = []
         for element in files:
             self.__results.append(pd.read_csv(element))
         self.medians: list[pd.core.series.Series] = [element.median(axis=1).iloc[0] for element in self.__results]
     
-    @dispatch(pathlib.Path)
-    def __init__(self, folder: pathlib.Path) -> None:
-        self.__results: list[pd.core.frame.DataFrame] = []
-        pass
+    # @overload
+    # def __init__(self, folder: pathlib.Path) -> None:
+    #     self.__results: list[pd.core.frame.DataFrame] = []
+    #     pass
 
     def plot_graphic(self, *args, kind='scatter', show=False, xlabel=None,ylabel=None,title=None, **kwargs):
         fig, ax = plt.subplots()

@@ -11,7 +11,7 @@ import numpy as np
 def main(n: int, i: int) -> None:
     benchmark = Benchmark(deterministic(fib), fib, lru_cache(fib)) #, factory.decorator(fib))
     benchmark.benchmark(n, i=i)
-    benchmark.save_csv(['results_intpy.csv', 'results_vanilla.csv', 'results_lru_cache.csv'], folder='./results')
+    benchmark.save_csv(['results_intpy.csv', 'results_vanilla.csv', 'results_lru_cache.csv'], opening_mode='w', folder='results_fibonacci')
 
 if __name__ == '__main__':
     n = int(sys.argv[1])
