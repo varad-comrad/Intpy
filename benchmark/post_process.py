@@ -1,6 +1,5 @@
 import pandas as pd
 import numpy as np
-from typing import Optional, overload
 import pathlib
 # from multipledispatch import dispatch
 import matplotlib.pyplot as plt
@@ -14,7 +13,6 @@ import seaborn as sns
 
 # s3.plot(title='relative difference between intpy and vanilla')
 # plt.show()
-# ! HASHES DIFERENTES 
 class ProcessResults:
 
     graphic_kinds = {
@@ -25,22 +23,49 @@ class ProcessResults:
         'scatter': sns.scatterplot
     } 
 
-    # @overload
-    def __init__(self,files: list[str], folder: str) -> None:
-        self.__results: list[pd.core.frame.DataFrame] = []
-        for element in files:
-            self.__results.append(pd.read_csv(element))
-        self.medians: list[pd.core.series.Series] = [element.median(axis=1).iloc[0] for element in self.__results]
-    
-    # @overload
-    # def __init__(self, folder: pathlib.Path) -> None:
-    #     self.__results: list[pd.core.frame.DataFrame] = []
-    #     pass
+    def __new__(cls, *args, **kwargs):
+        if hasattr(cls, 'instance'):
+            return cls.instance
+        cls.instance = super().__new__(cls)
+        return cls.instance
 
-    def plot_graphic(self, *args, kind='scatter', show=False, xlabel=None,ylabel=None,title=None, **kwargs):
+    def __init__(self, dirs: list[str] = ['.'], files: list[str] | None = None) -> None:
+        # TODO: type checking to format everything properly
+        # TODO: implement handling of subdirectories if the user wishes so
+        if isinstance(dirs, list) and isinstance(dirs[0], str) and isinstance(files, list | None):
+            new_dirs = [pathlib.Path(element) for element in dirs]
+        else:
+            raise TypeError('dirs must be a list of strings')
+
+        self.__results: list[pd.core.frame.DataFrame] = []
+        if files is not None:
+            self.__iter_with_files(new_dirs, files)
+        else:
+            self.__iter_without_files(new_dirs)
+
+    def __iter_without_files(self, dirs: list[pathlib.Path]) -> None:
+        for element in dirs:
+            for file in element.iterdir():
+                self.__results.append(pd.read_csv(file.absolute())) if file.is_file() else None
+        pass
+
+    def __iter_with_files(self, dirs: list[pathlib.Path], files: list[str]) -> None:
+        for file in files:
+            for dir in dirs:
+                aux = dir.joinpath(file)
+                self.__results.append(pd.read_csv(aux.absolute())) if aux.is_file() else None
+        pass
+
+    def plot_graphic(self, *args, kind: str='scatter', show: bool=False,
+                     xlabel: str | None=None,
+                     ylabel: str | None=None,
+                     title: str | None=None,
+                     **kwargs) -> tuple:
+        
         fig, ax = plt.subplots()
-        ax = self.graphic_kinds[kind](x=range(len(self.medians)),y=self.medians,*args, **kwargs)
-        if show:
-            fig.show()
+        # # ax = self.graphic_kinds[kind](x=range(len(self.medians)),y=self.medians,*args, **kwargs)
+        # if show:
+        #     fig.show()
         return fig, ax
 
+a = ProcessResults(['results_fibonacci'])
