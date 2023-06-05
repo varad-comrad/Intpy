@@ -20,17 +20,22 @@ import pathlib
 #     # parser.add_argument('-f', '--fib')
 #     # args = parser.parse_args()
 #     # print(args.fib)
-class A:
-    def __new__(cls, *args, **kwargs):
-        if hasattr(cls, 'instance'):
-            return cls.instance
-        cls.instance = super().__new__(cls)
-        return cls.instance
+# class A:
+#     def __new__(cls, *args, **kwargs):
+#         if hasattr(cls, 'instance'):
+#             return cls.instance
+#         cls.instance = super().__new__(cls)
+#         return cls.instance
     
-    def __init__(self, a) -> None:
-        self.a = a
+#     def __init__(self, a) -> None:
+#         self.a = a
 
-a = A('sjff')
-print(a.a)
-a = A('wkjdhgw')
-print(a.a)
+# a = A('sjff')
+# print(a.a)
+# a = A('wkjdhgw')
+# print(a.a)
+
+import pandas as pd
+l = [pd.read_csv('results_fibonacci/results_intpy.csv') for _ in range(5)]
+df = pd.Series(l)
+print(df[0])
