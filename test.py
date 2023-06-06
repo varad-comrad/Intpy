@@ -4,12 +4,12 @@ import pathlib
 # from intpy_dev.intpy import initialize_intpy, get_params
 
 
-# # @factory.decorator
-# def fib(n):
-#     return fib(n-1) + fib(n-2) if n >1 else n
-# def pfib(n):
-#     print(fib(n))
-# fib(30)
+# @factory.decorator
+def fib(n):
+    return fib(n-1) + fib(n-2) if n >1 else n
+def pfib(n):
+    print(fib(n))
+fib(30)
 
 # # @initialize_intpy(__file__)
 # def main():
@@ -35,7 +35,7 @@ import pathlib
 # a = A('wkjdhgw')
 # print(a.a)
 
-import pandas as pd
-l = [pd.read_csv('results_fibonacci/results_intpy.csv') for _ in range(5)]
-df = pd.Series(l)
-print(df[0])
+# import pandas as pd
+# l = [pd.read_csv('results_fibonacci/results_intpy.csv') for _ in range(5)]
+# df = pd.Series(l)
+# print(df[0])

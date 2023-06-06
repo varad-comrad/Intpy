@@ -11,9 +11,11 @@ import numpy as np
 def main(n: int, i: int) -> None:
     benchmark = Benchmark(deterministic(fib), fib, lru_cache(fib)) #, factory.decorator(fib))
     benchmark.benchmark(n, i=i)
-    benchmark.save_csv(['results_intpy.csv', 'results_vanilla.csv', 'results_lru_cache.csv'], opening_mode='w', folder='results_fibonacci')
+    benchmark.save_csv(['results_intpy.csv', 'results_vanilla.csv', 'results_lru_cache.csv'],
+                        opening_mode='w',
+                        folder='results_fibonacci',
+                        include_columns=False)
 
 if __name__ == '__main__':
     n = int(sys.argv[1])
-    i = int(sys.argv[2])
-    main(n, i)
+    main(n, 1)

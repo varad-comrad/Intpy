@@ -25,7 +25,7 @@ class Benchmark:
 
     def save_csv(self, filepaths: list[str], folder: str ='.',
                     opening_mode: typing.Literal['w', 'a'] = 'w',
-                    hidden_folder:bool = False) -> None:
+                    hidden_folder:bool = False, include_columns=True) -> None:
         
         if opening_mode not in ['w', 'a']: # ! To implement proper arg handling
             raise ValueError('Invalid opening mode')
@@ -39,7 +39,8 @@ class Benchmark:
             already_exists = path.joinpath(filepath).exists()
             with path.joinpath(filepath).absolute().open(opening_mode) as fp:
                 writer = csv.writer(fp)
-                if opening_mode == 'w' or not already_exists:
-                    writer.writerow(range(1,len(lst)+1))
+                if include_columns:
+                    if opening_mode == 'w' or not already_exists:
+                        writer.writerow(range(1,len(lst)+1))
                 writer.writerow(lst)
 
