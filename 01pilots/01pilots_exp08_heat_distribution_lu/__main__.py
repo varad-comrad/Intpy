@@ -12,6 +12,7 @@ from model import Model
 from intpy.intpy import initialize_intpy
 import time
 
+
 @initialize_intpy(__file__)
 def main():
     dimensionality = (2,2)

@@ -2,7 +2,12 @@ import numpy as np
 from itertools import combinations
 from collections import Counter
 import datetime as dt
-from intpy import deterministic 
+
+from pathlib import Path
+import sys
+sys.path.append(str(Path(__file__).parent.parent.parent))
+
+from intpy.intpy import initialize_intpy, deterministic
 
 np.random.seed(0)
 
