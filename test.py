@@ -1,15 +1,19 @@
+# h = 'uasvf'
+# def a():
+#     print(h)
+
 # from memoizer.DecoratorFactoryInstance import factory #! Not Working!!! Memo is for Python2
-import argparse
-import pathlib
-# from intpy_dev.intpy import initialize_intpy, get_params
+# import argparse
+# import pathlib
+# # from intpy_dev.intpy import initialize_intpy, get_params
 
 
 # @factory.decorator
-def fib(n):
-    return fib(n-1) + fib(n-2) if n >1 else n
-def pfib(n):
-    print(fib(n))
-fib(30)
+# def fib(n):
+#     return fib(n-1) + fib(n-2) if n >1 else n
+# def pfib(n):
+#     print(fib(n))
+# fib(30)
 
 # # @initialize_intpy(__file__)
 # def main():

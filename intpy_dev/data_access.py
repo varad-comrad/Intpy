@@ -1,4 +1,6 @@
 import hashlib
+import mmh3
+import xxhash
 import os
 import threading
 
@@ -44,8 +46,15 @@ def _remove(id):
 
 
 def _get_id(fun_args, fun_source):
-    return hashlib.md5((str(fun_args) + fun_source).encode('utf')).hexdigest()
-
+    aux = 0
+    if g_argsp_hash == 'md5':
+        aux = hashlib.md5((str(fun_args) + fun_source).encode('utf')).hexdigest()
+    elif g_argsp_hash == 'murmur':
+        aux = hex(mmh3.hash128((str(fun_args) + fun_source).encode('utf')))[2:]
+    elif g_argsp_hash == 'xxhash':
+        aux = xxhash.xxh128_hexdigest((str(fun_args) + fun_source).encode('utf'))
+    print(aux)
+    return aux
 
 def _get_file_name(id):
     return "{0}.{1}".format(id, "ipcache")
