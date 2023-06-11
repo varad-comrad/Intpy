@@ -1,17 +1,18 @@
-import pickle
 import hashlib
+import mmh3
+import xxhash
 import os
 import threading
 
-from intpy.parser_params import get_params
-from intpy.banco import Banco
-from intpy.logger.log import debug, warn
+from intpy_dev.parser_params import get_params
+from intpy_dev.banco import Banco
+from intpy_dev.logger.log import debug, warn
 
 #from . import CONEXAO_BANCO
 
 # Opening database connection and creating select query to the database
 # to populate DATA_DICTIONARY
-g_argsp_v, g_argsp_no_cache = get_params()
+g_argsp_v, g_argsp_no_cache, g_argsp_serialization, g_argsp_hash = get_params()
 CONEXAO_BANCO = None
 if(g_argsp_v != ['v01x']):
     CONEXAO_BANCO = Banco(os.path.join(".intpy", "intpy.db"))
@@ -22,31 +23,38 @@ CACHED_DATA_DICTIONARY_SEMAPHORE = threading.Semaphore()
 
 
 def _save(file_name):
-    CONEXAO_BANCO.executarComandoSQLSemRetorno("INSERT OR IGNORE INTO CACHE(cache_file) VALUES ('{0}')".format(file_name))
+    CONEXAO_BANCO.executarComandoSQLSemRetorno("INSERT OR IGNORE INTO CACHE(cache_file) VALUES (?)", (file_name,))
 
 
 #Versão desenvolvida por causa do _save em salvarNovosDadosBanco para a v0.2.5.x e a v0.2.6.x, com o nome da função
 #Testar se existe a sobrecarga
 def _save_fun_name(file_name, fun_name):
-    CONEXAO_BANCO.executarComandoSQLSemRetorno("INSERT OR IGNORE INTO CACHE(cache_file, fun_name) VALUES ('{0}', '{1}')".format(file_name, fun_name))
+    CONEXAO_BANCO.executarComandoSQLSemRetorno("INSERT OR IGNORE INTO CACHE(cache_file, fun_name) VALUES (?, ?)", (file_name, fun_name))
 
 
 def _get(id):
-    return CONEXAO_BANCO.executarComandoSQLSelect("SELECT cache_file FROM CACHE WHERE cache_file = '{0}'".format(id))
+    return CONEXAO_BANCO.executarComandoSQLSelect("SELECT cache_file FROM CACHE WHERE cache_file = ?", (id,))
 
 
 #Versão desenvolvida por causa do _get_fun_name, que diferente do _get, recebe o nome da função ao invés do id, serve para a v0.2.5.x e a v0.2.6.x, que tem o nome da função
 def _get_fun_name(fun_name):
-    return CONEXAO_BANCO.executarComandoSQLSelect("SELECT cache_file FROM CACHE WHERE fun_name = '{0}'".format(fun_name))
+    return CONEXAO_BANCO.executarComandoSQLSelect("SELECT cache_file FROM CACHE WHERE fun_name = ?", (fun_name,))
 
 
 def _remove(id):
-    CONEXAO_BANCO.executarComandoSQLSemRetorno("DELETE FROM CACHE WHERE cache_file = '{0}';".format(id))
+    CONEXAO_BANCO.executarComandoSQLSemRetorno("DELETE FROM CACHE WHERE cache_file = ?;", (id,))
 
 
-def _get_id(fun_name, fun_args, fun_source):
-    return hashlib.md5((fun_name + str(fun_args) + fun_source).encode('utf')).hexdigest()
-
+def _get_id(fun_args, fun_source):
+    aux = 0
+    if g_argsp_hash == 'md5':
+        aux = hashlib.md5((str(fun_args) + fun_source).encode('utf')).hexdigest()
+    elif g_argsp_hash == 'murmur':
+        aux = hex(mmh3.hash128((str(fun_args) + fun_source).encode('utf')))[2:]
+    elif g_argsp_hash == 'xxhash':
+        aux = xxhash.xxh128_hexdigest((str(fun_args) + fun_source).encode('utf'))
+    print(aux)
+    return aux
 
 def _get_file_name(id):
     return "{0}.{1}".format(id, "ipcache")
@@ -59,7 +67,27 @@ def _autofix(id):
     debug("environment fixed")
 
 
-def _deserialize(id):
+def _serialize_pickle(return_value, file_name):
+    import pickle
+    with open(".intpy/cache/{0}".format(_get_file_name(file_name)), 'wb') as file:
+        pickle.dump(return_value, file, protocol=pickle.HIGHEST_PROTOCOL)
+
+
+def _serialize_jsonpickle(return_value, file_name):
+    import jsonpickle
+    with open(".intpy/cache/{0}".format(_get_file_name(file_name)), 'wt') as file:
+        object_serialized = jsonpickle.encode(return_value)
+        file.write(object_serialized)
+
+
+def _serialize_simplejson(return_value, file_name):
+    import simplejson
+    with open(".intpy/cache/{0}".format(_get_file_name(file_name)), 'wt') as file:
+        simplejson.dump(return_value, file)
+
+
+def _deserialize_pickle(id):
+    import pickle
     try:
         with open(".intpy/cache/{0}".format(_get_file_name(id)), 'rb') as file:
             return pickle.load(file)
@@ -70,9 +98,29 @@ def _deserialize(id):
         return None
 
 
-def _serialize(return_value, file_name):
-    with open(".intpy/cache/{0}".format(_get_file_name(file_name)), 'wb') as file:
-        return pickle.dump(return_value, file, protocol=pickle.HIGHEST_PROTOCOL)
+def _deserialize_jsonpickle(id):
+    import jsonpickle
+    try:
+        with open(".intpy/cache/{0}".format(_get_file_name(id)), 'rt') as file:
+            object_serialized = file.read()
+            return jsonpickle.decode(object_serialized)
+    except FileNotFoundError as e:
+        warn("corrupt environment. Cache reference exists for a function in database but there is no file for it in cache folder.\
+            Have you deleted cache folder?")
+        _autofix(id)
+        return None
+
+
+def _deserialize_simplejson(id):
+    import simplejson
+    try:
+        with open(".intpy/cache/{0}".format(_get_file_name(id)), 'rt') as file:
+            return simplejson.load(file)
+    except FileNotFoundError as e:
+        warn("corrupt environment. Cache reference exists for a function in database but there is no file for it in cache folder.\
+            Have you deleted cache folder?")
+        _autofix(id)
+        return None
 
 
 def _get_cache_data_v01x(id):
@@ -184,7 +232,7 @@ def _get_cache_data_v027x(id):
 
 # Aqui misturam as versões v0.2.1.x a v0.2.7.x e v01x
 def get_cache_data(fun_name, fun_args, fun_source, argsp_v):
-    id = _get_id(fun_name, fun_args, fun_source)
+    id = _get_id(fun_args, fun_source)
 
     if(argsp_v == ['v01x']):
         ret_get_cache_data_v01x = _get_cache_data_v01x(id)
@@ -226,7 +274,7 @@ def add_new_data_to_CACHED_DATA_DICTIONARY(list_file_names):
 
 # Aqui misturam as versões v0.2.1.x a v0.2.7.x e v01x
 def create_entry(fun_name, fun_args, fun_return, fun_source, argsp_v):
-    id = _get_id(fun_name, fun_args, fun_source)
+    id = _get_id(fun_args, fun_source)
     if argsp_v == ['v01x']:
         global CONEXAO_BANCO
         CONEXAO_BANCO = Banco(os.path.join(".intpy", "intpy.db"))
@@ -279,6 +327,14 @@ def salvarNovosDadosBanco(argsp_v):
     CONEXAO_BANCO.salvarAlteracoes()
     CONEXAO_BANCO.fecharConexao()
 
+
+g_serialization_functions = {
+    "pickle": [_serialize_pickle, _deserialize_pickle],
+    "jsonpickle": [_serialize_jsonpickle, _deserialize_jsonpickle],
+    "simplejson": [_serialize_simplejson, _deserialize_simplejson]
+}
+
+_serialize, _deserialize = g_serialization_functions[g_argsp_serialization]
 
 if(g_argsp_v == ['1d-ad'] or g_argsp_v == ['v022x']
     or g_argsp_v == ['2d-ad'] or g_argsp_v == ['v023x']):
