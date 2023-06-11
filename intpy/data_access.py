@@ -53,7 +53,6 @@ def _get_id(fun_args, fun_source):
         aux = hex(mmh3.hash128((str(fun_args) + fun_source).encode('utf')))[2:]
     elif g_argsp_hash == 'xxhash':
         aux = xxhash.xxh128_hexdigest((str(fun_args) + fun_source).encode('utf'))
-    print(aux)
     return aux
 
 def _get_file_name(id):
