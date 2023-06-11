@@ -4,9 +4,9 @@ import xxhash
 import os
 import threading
 
-from intpy_dev.parser_params import get_params
-from intpy_dev.banco import Banco
-from intpy_dev.logger.log import debug, warn
+from intpy.parser_params import get_params
+from intpy.banco import Banco
+from intpy.logger.log import debug, warn
 
 #from . import CONEXAO_BANCO
 

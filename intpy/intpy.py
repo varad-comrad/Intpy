@@ -4,9 +4,9 @@ import sys
 
 from functools import wraps
 
-from intpy_dev.parser_params import get_params
-from intpy_dev.environment import init_env
-from intpy_dev.logger.log import debug
+from intpy.parser_params import get_params
+from intpy.environment import init_env
+from intpy.logger.log import debug
 
 g_argsp_v, g_argsp_no_cache, g_argsp_serialization, g_argsp_hash = get_params()
 
@@ -34,8 +34,8 @@ if g_argsp_no_cache:
         return f
 else:
     init_env()
-    from intpy_dev.data_access import get_cache_data, create_entry, salvarNovosDadosBanco
-    from intpy_dev.function_graph import create_experiment_function_graph, get_source_code_executed
+    from intpy.data_access import get_cache_data, create_entry, salvarNovosDadosBanco
+    from intpy.function_graph import create_experiment_function_graph, get_source_code_executed
 
     g_user_script_graph = None
 
