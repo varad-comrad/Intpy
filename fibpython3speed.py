@@ -1,5 +1,6 @@
 import sys, time
-from speedupy import initialize_intpy, deterministic
+from speedupy.intpy
+import initialize_intpy, deterministic
 
 @deterministic
 def fib(n):
