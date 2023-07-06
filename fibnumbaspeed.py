@@ -1,5 +1,5 @@
 import numba as nb, time, sys
-from speedupy import initialize_intpy, deterministic
+from speedupy.intpy import initialize_intpy, deterministic
 
 @deterministic
 @nb.njit
